@@ -445,8 +445,6 @@ public class Gioco  implements ActionListener {
                 table.setVisible(true);
                 classificaTrofeiTable.setVisible(false);
                 table.setBackground(team[18].getColor());
-
-
             }
         }
         if(e.getSource()==team[19].getButton()) {
@@ -463,20 +461,30 @@ public class Gioco  implements ActionListener {
                 table.setVisible(true);
                 classificaTrofeiTable.setVisible(false);
                 table.setBackground(team[19].getColor());
-
-
             }
         }
     }
     public void serieA(){
-        for(int j=0;j<20;j++)
-        for(int i=0;i<20;i++){
-            match(team[i],team[j]);}
-        for(int j=0;j<20;j++)
-            for(int i=0;i<20;i++){
+        for(int j=0;j<20;j++) {
+            for (int i = 0; i < 20; i++) {
+                match(team[i], team[j]);
+            }
+        }
+
+        for(int j=0;j<20;j++) {
+            for (int i = 0; i < 20; i++) {
                 team[j].getPlayer(i).addEta();
                 team[j].ritiro40();
+                if (team[j].getPlayer(i).getEta() > 35) {
+                    team[j].getPlayer(i).decPrezzo1000();
+                    team[j].getPlayer(i).decAbilita1();
+                }
+                if (team[j].getPlayer(i).getEta() < 25) {
+                    team[j].getPlayer(i).incPrezzo1000();
+                    team[j].getPlayer(i).incAbilita1();
+                }
             }
+        }
         updateClassifica();
     }
     public void ordinaTeamTrofei(){

@@ -37,7 +37,7 @@ public class Team  implements ActionListener{
     public void setColor(){
         if(nome=="Juventus") color=Color.white;
         if(nome=="Napoli") color=Color.CYAN;
-        if(nome=="Inter") color=Color.blue;
+        if(nome=="Inter") color=Color.white;
         if(nome=="Milan") color=Color.red;
         if(nome=="Roma") color=Color.ORANGE;
         if(nome=="Lazio") color=Color.CYAN;
@@ -52,7 +52,7 @@ public class Team  implements ActionListener{
         if(nome=="Verona") color=Color.yellow;
         if(nome=="Spezia") color=Color.white;
         if(nome=="Monza") color=Color.red;
-        if(nome=="Empoli") color=Color.blue;
+        if(nome=="Empoli") color=Color.CYAN;
         if(nome=="Salernitana") color=Color.pink;
         if(nome=="Udinese") color=Color.white;
 

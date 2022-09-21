@@ -66,5 +66,17 @@ public void setAbilita(int n){
     public void addEta(){
         eta=eta+1;
     }
+    public void decPrezzo1000(){
+        prezzo=prezzo-1000;
+    }
+    public void decAbilita1(){
+        abilita=abilita-1;
+    }
+    public void incPrezzo1000(){
+        prezzo=prezzo+1000;
+    }
+    public void incAbilita1(){
+        abilita=abilita+1;
+    }
 
 }
