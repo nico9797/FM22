@@ -39,7 +39,9 @@ String[] cognomi={"Lopez","Torres","Ferri","Aldisco","Costa","Giordano","Rizzo",
             prezzo = p.getPrezzo();
             gol = p.getGol();
         }
-
+public void setAbilita(int n){
+        abilita=n;
+}
     public String getNome(){
         return nome;
     }

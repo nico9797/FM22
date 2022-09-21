@@ -1,7 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,8 +27,9 @@ public class Gioco  implements ActionListener {
   public ImageIcon salernitana = new ImageIcon("C:\\Users\\ndipi\\Desktop\\workspace\\newP\\media\\salernitana.png");
   public ImageIcon imm = new ImageIcon("C:\\Users\\ndipi\\Desktop\\workspace\\newP\\media\\25.png");
   public ImageIcon immStart = new ImageIcon("C:\\Users\\ndipi\\Desktop\\workspace\\newP\\media\\R.png");
-
+    public ImageIcon coppe = new ImageIcon("C:\\Users\\ndipi\\Desktop\\workspace\\newP\\media\\coppe.png");
     Team[] team = new Team[20];
+    Team[] teamTrofei = new Team[20];
     JLabel labelStadio = new JLabel(imm);
     JFrame frame = new JFrame("FM");
     JPanel panel = new JPanel();
@@ -39,8 +37,9 @@ public class Gioco  implements ActionListener {
     JButton startButton =new JButton("START");
     JPanel panelCl=new JPanel();
     JButton playButton= new JButton("PLAY");
-    JTable classifica=new JTable(20,5);
-
+    JButton alboButton=new JButton("ALBO");
+    JTable classificaTable=new JTable(20,6);
+    JTable classificaTrofeiTable=new JTable(20,2);
 
     Gioco() {
         team[0] = new Team("Juventus", juventus);
@@ -78,7 +77,6 @@ public class Gioco  implements ActionListener {
             team[i].getButton().addActionListener(this);
         }
         table.setEnabled(false);
-        table.setBackground(Color.white);
         labelStadio.add(table,BorderLayout.CENTER);
         table.setOpaque(false);
 
@@ -91,18 +89,382 @@ public class Gioco  implements ActionListener {
         labelStadio.add(startButton,BorderLayout.NORTH);
         startButton.setOpaque(true);
         startButton.addActionListener(this);
+        alboButton.addActionListener(this);
+        alboButton.setOpaque(false);
 
-
+        for(int i=0;i<20;i++){
+            teamTrofei[i]=new Team("Caso",inter);
+            teamTrofei[i].copia(team[i]);
+        }
     }
-    public void ordinaTeam(){
-        Team t=new Team ("t",juventus);//temp
-        for(int j=20;j>0;j--) {
-            for (int i = 0; i + 1 < j; i++) {
-                if (team[i].getP() < team[i+1].getP()) {
-                    t.copia(team[i+1]);
-                    team[i+1].copia(team[i]);
-                    team[i].copia(t);
-                }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==playButton){
+            labelStadio.setIcon(imm);
+            serieA();
+        }
+        if(e.getSource()==alboButton){
+            table.setVisible(false);
+            classificaTrofeiTable.setVisible(true);
+            updateClassificaTrofei();
+            classificaTrofeiTable.setOpaque(false);
+            labelStadio.add(classificaTrofeiTable,BorderLayout.CENTER);
+            labelStadio.setIcon(coppe);
+        }
+        if(e.getSource()==startButton){
+            panelCl.setVisible(true);
+            labelStadio.setIcon(imm);
+            labelStadio.remove(startButton);
+            labelStadio.add(playButton,BorderLayout.SOUTH);
+            playButton.setLayout(new BorderLayout());
+            playButton.add(alboButton,BorderLayout.EAST);
+            alboButton.setBackground(Color.white);
+            alboButton.setFont(new Font("Sans Serif", Font.ITALIC, 30));
+            playButton.setFont(new Font("Sans Serif", Font.ITALIC, 50));
+            playButton.addActionListener(this);
+            classificaTable.setEnabled(false);
+            panelCl.setBorder(BorderFactory.createLineBorder(Color.black,1));
+            classificaTable.setBorder(BorderFactory.createLineBorder(Color.blue,1));
+            labelStadio.add(classificaTable,BorderLayout.EAST);
+            updateClassifica();
+
+        }
+        if(e.getSource()==team[0].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[0].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[0].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[0].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[0].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[0].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[0].getPlayer(i).getAbilita(),i,5);
+            }
+            table.setBackground(team[0].getColor());
+            table.setVisible(true);
+
+            classificaTrofeiTable.setVisible(false);
+        }
+        if(e.getSource()==team[1].getButton()) {
+            classificaTrofeiTable.setVisible(false);
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[1].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[1].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[1].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[1].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[1].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[1].getPlayer(i).getAbilita(),i,5);
+            }
+            table.setVisible(true);
+            table.setBackground(team[1].getColor());
+            classificaTrofeiTable.setVisible(false);
+        }
+        if(e.getSource()==team[2].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[2].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[2].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[2].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[2].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[2].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[2].getPlayer(i).getAbilita(),i,5);
+            }
+            table.setVisible(true);
+            classificaTrofeiTable.setVisible(false);
+            table.setBackground(team[2].getColor());
+
+        }
+        if(e.getSource()==team[3].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[3].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[3].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[3].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[3].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[3].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[3].getPlayer(i).getAbilita(),i,5);
+            }
+            table.setBackground(team[3].getColor());
+            table.setVisible(true);
+            classificaTrofeiTable.setVisible(false);
+        }
+        if(e.getSource()==team[4].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[4].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[4].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[4].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[4].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[4].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[4].getPlayer(i).getAbilita(),i,5);
+            }
+            table.setVisible(true);
+            classificaTrofeiTable.setVisible(false);
+            table.setBackground(team[4].getColor());
+
+        }
+        if(e.getSource()==team[5].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[5].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[5].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[5].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[5].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[5].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[5].getPlayer(i).getAbilita(),i,5);
+            }
+            table.setVisible(true);
+            classificaTrofeiTable.setVisible(false);
+            table.setBackground(team[5].getColor());
+
+        }
+        if(e.getSource()==team[6].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[6].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[6].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[6].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[6].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[6].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[6].getPlayer(i).getAbilita(),i,5);
+            }
+            table.setVisible(true);
+            classificaTrofeiTable.setVisible(false);
+            table.setBackground(team[6].getColor());
+
+        }
+        if(e.getSource()==team[7].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[7].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[7].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[7].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[7].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[7].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[7].getPlayer(i).getAbilita(),i,5);
+            }
+            table.setVisible(true);
+            classificaTrofeiTable.setVisible(false);
+            table.setBackground(team[7].getColor());
+
+        }
+        if(e.getSource()==team[8].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[8].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[8].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[8].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[8].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[8].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[8].getPlayer(i).getAbilita(),i,5);
+
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+                table.setBackground(team[8].getColor());
+
+            }
+        }
+        if(e.getSource()==team[9].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[9].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[9].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[9].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[9].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[9].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[9].getPlayer(i).getAbilita(),i,5);
+
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+                table.setBackground(team[9].getColor());
+
+
+            }
+        }
+        if(e.getSource()==team[10].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[10].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[10].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[10].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[10].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[10].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[10].getPlayer(i).getAbilita(),i,5);
+
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+                table.setBackground(team[10].getColor());
+
+
+            }
+        }
+        if(e.getSource()==team[11].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[11].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[11].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[11].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[11].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[11].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[11].getPlayer(i).getAbilita(),i,5);
+
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+                table.setBackground(team[11].getColor());
+
+
+            }
+        }
+        if(e.getSource()==team[12].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[12].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[12].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[12].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[12].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[12].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[12].getPlayer(i).getAbilita(),i,5);
+
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+                table.setBackground(team[12].getColor());
+
+
+            }
+        }
+        if(e.getSource()==team[13].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[13].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[13].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[13].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[13].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[13].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[13].getPlayer(i).getAbilita(),i,5);
+
+                table.setBackground(team[13].getColor());
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+
+            }
+        }
+        if(e.getSource()==team[14].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[14].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[14].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[14].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[14].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[14].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[14].getPlayer(i).getAbilita(),i,5);
+
+                table.setBackground(team[14].getColor());
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+
+            }
+        }
+        if(e.getSource()==team[15].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[15].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[15].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[15].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[15].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[15].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[15].getPlayer(i).getAbilita(),i,5);
+
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+                table.setBackground(team[15].getColor());
+
+
+            };
+        }
+        if(e.getSource()==team[16].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[16].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[16].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[16].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[16].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[16].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[16].getPlayer(i).getAbilita(),i,5);
+
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+                table.setBackground(team[16].getColor());
+
+            }
+        }
+        if(e.getSource()==team[17].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[17].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[17].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[17].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[17].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[17].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[17].getPlayer(i).getAbilita(),i,5);
+
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+                table.setBackground(team[17].getColor());
+
+
+            }
+        }
+        if(e.getSource()==team[18].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[18].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[18].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[18].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[18].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[18].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[18].getPlayer(i).getAbilita(),i,5);
+
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+                table.setBackground(team[18].getColor());
+
+
+            }
+        }
+        if(e.getSource()==team[19].getButton()) {
+            labelStadio.add(table,BorderLayout.CENTER);
+
+            for(int i=0;i<20;i++){
+                table.setValueAt(team[19].getPlayer(i).getNome(),i,0);
+                table.setValueAt(team[19].getPlayer(i).getCognome(),i,1);
+                table.setValueAt(team[19].getPlayer(i).getEta(),i,2);
+                table.setValueAt(team[19].getPlayer(i).getGol(),i,3);
+                table.setValueAt(team[19].getPlayer(i).getPrezzo(),i,4);
+                table.setValueAt(team[19].getPlayer(i).getAbilita(),i,5);
+
+                table.setVisible(true);
+                classificaTrofeiTable.setVisible(false);
+                table.setBackground(team[19].getColor());
+
+
             }
         }
     }
@@ -110,20 +472,31 @@ public class Gioco  implements ActionListener {
         for(int j=0;j<20;j++)
         for(int i=0;i<20;i++){
             match(team[i],team[j]);}
-
         for(int j=0;j<20;j++)
             for(int i=0;i<20;i++){
                 team[j].getPlayer(i).addEta();
                 team[j].ritiro40();
             }
-        ordinaTeam();
-        System.out.println(team[0].getPlayer(0).getNome()+team[0].getNome());
+        updateClassifica();
+    }
+    public void ordinaTeamTrofei(){
+        Team t=new Team ("t",juventus);//temp
+        for(int j=20;j>0;j--) {
+            for (int i = 0; i + 1 < j; i++) {
+                if (teamTrofei[i].getTrofei() < teamTrofei[i+1].getTrofei()) {
+                    t.copia(teamTrofei[i+1]);
+                    teamTrofei[i+1].copia(teamTrofei[i]);
+                    teamTrofei[i].copia(t);
+                }
+            }
+        }
     }
     public int match(Team t1,Team t2){
         Random r=new Random();
         int gol=r.nextInt(7);
         int golt1=0;
         int golt2=0;
+        if(t1==t2)return 3;
         while(gol>0) {
             int p1 = r.nextInt(20);
             int p2 = r.nextInt(20);
@@ -153,298 +526,48 @@ public class Gioco  implements ActionListener {
         }
         return 3;
         }
-    public void setClassifica(){
-        for (int i = 0; i < 20; i++) {
-                classifica.setValueAt(team[i].getNome(),i ,0);
-                classifica.setValueAt(team[i].getP(),i,1);
-                classifica.setValueAt(team[i].getW(),i,2);
-                classifica.setValueAt(team[i].getD(),i,3);
-                classifica.setValueAt(team[i].getL(),i,4);
-                classifica.setVisible(true);
+    public void ordinaTeamP(){
+        Team t=new Team ("t",juventus);//temp
+        for(int j=20;j>0;j--) {
+            for (int i = 0; i + 1 < j; i++) {
+                if (team[i].getP() < team[i+1].getP()) {
+                    t.copia(team[i+1]);
+                    team[i+1].copia(team[i]);
+                    team[i].copia(t);
+                }
             }
+        }
+        team[0].addTrofei();
+
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==playButton){
-            serieA();
-            setClassifica();
-        }
-        if(e.getSource()==startButton){
-            panelCl.setVisible(true);
-            labelStadio.setIcon(imm);
-            labelStadio.remove(startButton);
-            labelStadio.add(playButton,BorderLayout.SOUTH);
-            playButton.setFont(new Font("Sans Serif", Font.ITALIC, 50));
-            playButton.addActionListener(this);
-            classifica.setEnabled(false);
-            panelCl.setBorder(BorderFactory.createLineBorder(Color.black,1));
-            classifica.setBorder(BorderFactory.createLineBorder(Color.blue,1));
-            labelStadio.add(classifica,BorderLayout.EAST);
-            setClassifica();
-
-        }
-        if(e.getSource()==playButton){
-
-        }
-            if(e.getSource()==team[0].getButton()) {
-           for(int i=0;i<20;i++){
-               table.setValueAt(team[0].getPlayer(i).getNome(),i,0);
-               table.setValueAt(team[0].getPlayer(i).getCognome(),i,1);
-               table.setValueAt(team[0].getPlayer(i).getEta(),i,2);
-               table.setValueAt(team[0].getPlayer(i).getGol(),i,3);
-               table.setValueAt(team[0].getPlayer(i).getPrezzo(),i,4);
-               table.setValueAt(team[0].getPlayer(i).getAbilita(),i,5);
-               table.setVisible(true);
-
-           }
-        }
-        if(e.getSource()==team[1].getButton()) {
-
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[1].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[1].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[1].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[1].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[1].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[1].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
+    public void azzeraStatTeam(){
+            for (int i = 0; i < 20; i++) {
+                team[i].azzeraPWDL();
             }
         }
-        if(e.getSource()==team[2].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[2].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[2].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[2].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[2].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[2].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[2].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
+    public void updateClassifica(){
+        ordinaTeamP();
+        for (int i = 0; i < 20; i++) {
+            classificaTable.setValueAt(i+1,i ,0);
+            classificaTable.setValueAt(team[i].getNome(),i ,1);
+                classificaTable.setValueAt(team[i].getP(),i,2);
+                classificaTable.setValueAt(team[i].getW(),i,3);
+                classificaTable.setValueAt(team[i].getD(),i,4);
+                classificaTable.setValueAt(team[i].getL(),i,5);
+                classificaTable.setVisible(true);
             }
+        azzeraStatTeam();
+    }
+    public void updateClassificaTrofei(){
+        for (int i = 0; i < 20; i++) {
+            teamTrofei[i].copia(team[i]);}
+            ordinaTeamTrofei();
+
+        for (int i = 0; i < 20; i++) {
+            classificaTrofeiTable.setValueAt(teamTrofei[i].getNome(),i ,0);
+            classificaTrofeiTable.setValueAt(teamTrofei[i].getTrofei(),i ,1);
         }
-        if(e.getSource()==team[3].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[3].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[3].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[3].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[3].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[3].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[3].getPlayer(i).getAbilita(),i,5);
+        ordinaTeamTrofei();
 
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[4].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[4].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[4].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[4].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[4].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[4].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[4].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[5].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[5].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[5].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[5].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[5].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[5].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[5].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[6].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[6].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[6].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[6].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[6].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[6].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[6].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[7].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[7].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[7].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[7].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[7].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[7].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[7].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[8].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[8].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[8].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[8].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[8].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[8].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[8].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[9].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[9].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[9].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[9].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[9].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[9].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[9].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[10].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[10].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[10].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[10].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[10].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[10].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[10].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[11].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[11].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[11].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[11].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[11].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[11].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[11].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[12].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[12].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[12].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[12].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[12].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[12].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[12].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[13].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[13].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[13].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[13].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[13].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[13].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[13].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[14].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[14].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[14].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[14].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[14].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[14].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[14].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[15].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[15].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[15].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[15].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[15].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[15].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[15].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            };
-        }
-        if(e.getSource()==team[16].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[16].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[16].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[16].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[16].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[16].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[16].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[17].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[17].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[17].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[17].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[17].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[17].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[17].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[18].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[18].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[18].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[18].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[18].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[18].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[18].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
-        if(e.getSource()==team[19].getButton()) {
-            for(int i=0;i<20;i++){
-                table.setValueAt(team[19].getPlayer(i).getNome(),i,0);
-                table.setValueAt(team[19].getPlayer(i).getCognome(),i,1);
-                table.setValueAt(team[19].getPlayer(i).getEta(),i,2);
-                table.setValueAt(team[19].getPlayer(i).getGol(),i,3);
-                table.setValueAt(team[19].getPlayer(i).getPrezzo(),i,4);
-                table.setValueAt(team[19].getPlayer(i).getAbilita(),i,5);
-
-                table.setVisible(true);
-
-            }
-        }
     }
 }
