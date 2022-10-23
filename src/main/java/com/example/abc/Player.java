@@ -47,7 +47,7 @@ public class Player {
             cognome=cognomi[r.nextInt(cognomi.length)];
             posizione=posizioni[r.nextInt(posizioni.length)];
             squadra=squadre[r.nextInt(squadre.length)];
-            while(eta<16)eta=r.nextInt(40);
+            while(eta<16||eta>40)eta=r.nextInt(40);
             while(abilita<60)abilita=r.nextInt(90);
             sviluppo=r.nextInt(3);
             prezzo=abilita*1000-eta*500;
