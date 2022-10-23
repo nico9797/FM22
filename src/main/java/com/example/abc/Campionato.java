@@ -9,20 +9,23 @@ public class Campionato {
     String[][] calendario=new String[380][10];
 
     Campionato(String[] s){
+        Random r=new Random();
+
         teams=new Team[s.length];
 
         for(int i=0;i<s.length;i++){
             teams[i]=new Team(s[i]);
+            if(s[i].equals("Juventus")||s[i].equals("Inter")||s[i].equals("Milan")||
+                    s[i].equals("Napoli")||s[i].equals("Roma")||s[i].equals("Lazio")||
+                    s[i].equals("Atalanta")){
+                for(int j=0;j<10;j++){
+                    int[]n={89,88,87,86};
+                    teams[i].getPlayer(j).setAbilita(n[r.nextInt(4)]);
+                }
+                }
 
         }
         berger(s);
-        for(int j=0;j<380;j++) {
-            for(int i=0;i<4;i++) {
-                System.out.print(calendario[j][i]+" ");
-            }
-            System.out.print("\n");
-
-        }
     }
     void azzeraClassifica(){
         for(int i=0;i<20;i++){

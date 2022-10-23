@@ -96,4 +96,7 @@ public class Player {
     void addGol(){
         gol=gol+1;
     }
+    void setAbilita(int n){
+        abilita=n;
+    }
 }
