@@ -8,16 +8,17 @@ public class Player {
     int eta,abilita,prezzo,gol,sviluppo;
     String[][] carriera;
 
-    Player(){
-        String[]nomi={"Nicola","Vito","Andrea","Antonio","Alessandro","Biagio","Carlo","Donato","Diego","Domingo","Ernesto","Enrico",
-        "Edoardo","Francesco","Federico","Fabio","Fernando","Fausto","Gabriele","Gianni","Guglielmo"};
-        String[]cognomi={"Tedeschi","Tarducci","Dipinto","Dilorenzo","Dimauro","Altini","Biasco","Bellanova","Zanotti","Acerbi","D'Ambrosio","Fontanarosa","Bastoni","Cordaz","Dimarco",
-        "Darmian","Verdi","Vini","Rossi","Ricci","Saponaro","Colucci","Edan","Ballini","Lucarello","Pani","Pinzi","Pirandelli"};
-        String[] posizioni={"AT","AS","AD","TR","CS","CC","CD","DC","PO"};
-        String squadre[]={"Juventus","Inter","Milan","Napoli","Roma","Lazio","Atalanta","Torino","Bologna","Sampdoria","Empoli",
-        "Monza","Lecce","Salernitana","Sassuolo","Udinese","Verona","Spezia","Fiorentina","Cremonese"};
+    String[]nomi={"Nicola","Vito","Andrea","Antonio","Alessandro","Biagio","Carlo","Donato","Diego","Domingo","Ernesto","Enrico",
+            "Edoardo","Francesco","Federico","Fabio","Fernando","Fausto","Gabriele","Gianni","Guglielmo"};
+    String[]cognomi={"Tedeschi","Tarducci","Dipinto","Dilorenzo","Dimauro","Altini","Biasco","Bellanova","Zanotti","Acerbi","D'Ambrosio","Fontanarosa","Bastoni","Cordaz","Dimarco",
+            "Darmian","Verdi","Vini","Rossi","Ricci","Saponaro","Colucci","Edan","Ballini","Lucarello","Pani","Pinzi","Pirandelli"};
+    String[] posizioni={"AT","AS","AD","TR","CS","CC","CD","DC","PO"};
+    String squadre[]={"Juventus","Inter","Milan","Napoli","Roma","Lazio","Atalanta","Torino","Bologna","Sampdoria","Empoli",
+            "Monza","Lecce","Salernitana","Sassuolo","Udinese","Verona","Spezia","Fiorentina","Cremonese"};
 
-        Random r=new Random();
+    Random r=new Random();
+    Player(){
+
         nome=nomi[r.nextInt(nomi.length)];
         cognome=cognomi[r.nextInt(cognomi.length)];
         posizione=posizioni[r.nextInt(posizioni.length)];
@@ -40,6 +41,20 @@ public class Player {
         if(eta>35){
             abilita = abilita - 1;
             prezzo=prezzo-5000;
+        }
+        if(eta>40){
+            nome=nomi[r.nextInt(nomi.length)];
+            cognome=cognomi[r.nextInt(cognomi.length)];
+            posizione=posizioni[r.nextInt(posizioni.length)];
+            squadra=squadre[r.nextInt(squadre.length)];
+            while(eta<16)eta=r.nextInt(40);
+            while(abilita<60)abilita=r.nextInt(90);
+            sviluppo=r.nextInt(3);
+            prezzo=abilita*1000-eta*500;
+            gol=0;
+            carriera=new String[25][3];
+            carriera[0][0]=squadra;
+            carriera[0][2]=String.valueOf(gol);
         }
 
     }
