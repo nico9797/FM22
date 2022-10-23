@@ -5,21 +5,20 @@
     android:id="@+id/a"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/campo"
+    android:background="@drawable/verde"
     android:visibility="visible"
     tools:context=".MainActivity"
     tools:visibility="visible">
 
     <Button
         android:id="@+id/reset"
-        android:layout_width="282dp"
-        android:layout_height="219dp"
+        android:layout_width="272dp"
+        android:layout_height="120dp"
         android:backgroundTint="#1C1C1C"
         android:text="Stagione conclusa. Clicca per iniziare una nuova stagione."
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/classificatable"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/classificabutton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TableLayout
@@ -31,7 +30,6 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/classificabutton"
         app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
@@ -232,17 +230,6 @@
         </TableRow>
 
     </TableLayout>
-
-    <Button
-        android:id="@+id/classificabutton"
-        android:layout_width="60dp"
-        android:layout_height="48dp"
-        android:backgroundTint="#96AFD5"
-        android:textSize="8sp"
-        android:visibility="visible"
-        app:icon="@android:drawable/ic_menu_sort_by_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/play" />
 
     <Button
         android:id="@+id/play"
@@ -663,25 +650,21 @@
         android:id="@+id/giornata"
         android:layout_width="211dp"
         android:layout_height="184dp"
-        android:background="#FFFFFF"
+        android:background="#676565"
         android:fontFamily="sans-serif-smallcaps"
         android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/classificabutton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TableLayout
         android:id="@+id/classificatable"
-        android:layout_width="237dp"
-        android:layout_height="382dp"
+        android:layout_width="211dp"
+        android:layout_height="352dp"
         android:background="#FFFFFF"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/classificabutton"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintBottom_toTopOf="@+id/giornata"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TableRow
             android:id="@+id/pos0"
